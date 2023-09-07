@@ -9,6 +9,7 @@ myVideo.addEventListener("ended", function () {
 const fileInput = document.getElementById("file-input");
 const imagePreview = document.getElementById("image-preview");
 const skeletonImage = document.getElementById("skeleton-image");
+const uploadDefaultText = document.getElementById("uploadDefaultText");
 
 // Foydalanuvchidan rasmni yuklash uchun fayl tanlashini kuzatish
 fileInput.addEventListener("change", function () {
@@ -43,72 +44,29 @@ fileInput.addEventListener("change", function () {
     loadingText.textContent = "Loading...";
     imagePreview.style.display = "none";
 
-    // Axios orqali rasmni backendga yuborish
-    axios
-      .post("/backend/upload", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      })
+    console.log(file);
+
+    // Fetch orqali rasmni backendga yuborish
+    fetch("/backend/upload", {
+      method: "POST",
+      body: formData,
+    })
       .then((response) => {
+        if (!response.ok) {
+          throw new Error("Xatolik yuz berdi.");
+        }
+        return response.json();
+      })
+      .then((data) => {
         // Javobni brauzerga chiqarish
         loadingText.textContent = ""; // Loading yozuvi o'chiriladi
-        imagePreview.innerHTML = `<img src="${response.data.imageUrl}" alt="Rasmni ko'rish">`;
+        imagePreview.innerHTML = `<img src="${data.imageUrl}" alt="Rasmni ko'rish">`;
         imagePreview.style.display = "block";
+        uploadDefaultText.style.display = "none";
       })
       .catch((error) => {
         console.error(error);
         loadingText.textContent = "Xatolik yuz berdi. Qaytadan urinib ko'ring.";
       });
   }
-});
-
-// Kamera tugmasi bosilganda
-cameraButton.addEventListener("click", function () {
-  // Kamera orqali rasm olish
-  navigator.mediaDevices
-    .getUserMedia({ video: true })
-    .then(function (stream) {
-      const video = document.createElement("video");
-      video.srcObject = stream;
-      video.onloadedmetadata = function (e) {
-        video.play();
-        // Rasm olish va backendga jo'natish
-        const canvas = document.createElement("canvas");
-        canvas.width = video.videoWidth;
-        canvas.height = video.videoHeight;
-        const context = canvas.getContext("2d");
-        context.drawImage(video, 0, 0, canvas.width, canvas.height);
-        canvas.toBlob(
-          function (blob) {
-            const formData = new FormData();
-            formData.append("image", blob);
-            // Backendga yuborish
-            axios
-              .post("/backend/upload", formData, {
-                headers: {
-                  "Content-Type": "multipart/form-data",
-                },
-              })
-              .then((response) => {
-                // Javobni brauzerga chiqarish
-                loadingText.textContent = ""; // Loading yozuvi o'chiriladi
-                imagePreview.innerHTML = `<img src="${response.data.imageUrl}" alt="Rasmni ko'rish">`;
-                imagePreview.style.display = "block";
-              })
-              .catch((error) => {
-                console.error(error);
-                loadingText.textContent =
-                  "Xatolik yuz berdi. Qaytadan urinib ko'ring.";
-              });
-          },
-          "image/jpeg",
-          0.95
-        );
-      };
-    })
-    .catch(function (error) {
-      console.error(error);
-      loadingText.textContent = "Kamera foydalanilishi rad etildi.";
-    });
 });
