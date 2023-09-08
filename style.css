@@ -3437,7 +3437,9 @@ section.upload-section {
 }
 
 .upload-text {
-  width: 50%;
+  width: 100%;
+  text-align: center;
+  margin-top: 50px;
 }
 
 .upload-button-box {
@@ -3502,11 +3504,14 @@ section.upload-section {
   width: 50%;
   display: flex;
   flex-direction: column;
+  align-items: center;
 }
 
 .uploadDefaultText,
 #uploadDefaultText {
   width: 100%;
+  font-size: 28px;
+  color: #000000;
 }
 
 @media only screen and (max-width: 600px) {
@@ -3532,4 +3537,66 @@ section.upload-section {
   .skeleton-image {
     height: 200px;
   }
+
+  .upload-section-right {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+}
+
+.loader {
+  border: 10px solid #f3f3f3; /* Light grey */
+  border-top: 10px solid green; /* Blue */
+  border-radius: 50%;
+  width: 80px;
+  height: 80px;
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  0% {
+    transform: rotate(0deg);
+  }
+  100% {
+    transform: rotate(360deg);
+  }
+}
+
+#loading-text {
+  display: none;
+}
+
+#yechim1 {
+  display: none;
+  margin: 20px;
+  line-height: 20px;
+  text-align: justify;
+}
+
+#yechim2 {
+  display: none;
+  margin: 20px;
+  line-height: 20px;
+  text-align: justify;
+}
+
+#result-box {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+#kasal {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+#foizi {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 }
