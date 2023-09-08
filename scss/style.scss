@@ -1974,7 +1974,6 @@ img {
   margin-bottom: 30px;
   .btn {
     @include trans-duration(300ms);
-    padding: 0;
     font-size: 20px;
     color: $text-color;
     font-weight: 500;
@@ -2883,7 +2882,6 @@ img {
       width: 50px;
       height: 50px;
       z-index: 10;
-      border: none;
       background-color: $white-color;
       cursor: pointer;
       color: $heading-color;
