@@ -3498,6 +3498,17 @@ section.upload-section {
 
 /*  */
 
+.upload-section-right {
+  width: 50%;
+  display: flex;
+  flex-direction: column;
+}
+
+.uploadDefaultText,
+#uploadDefaultText {
+  width: 100%;
+}
+
 @media only screen and (max-width: 600px) {
   section.upload-section {
     flex-direction: column;

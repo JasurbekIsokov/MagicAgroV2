@@ -8,6 +8,8 @@ myVideo.addEventListener("ended", function () {
 // HTML elementlarni tanlash
 const fileInput = document.getElementById("file-input");
 const imagePreview = document.getElementById("image-preview");
+const resultText = document.getElementById("resultText");
+const resultFoiz = document.getElementById("resultFoiz");
 const skeletonImage = document.getElementById("skeleton-image");
 const uploadDefaultText = document.getElementById("uploadDefaultText");
 
@@ -38,7 +40,7 @@ fileInput.addEventListener("change", function () {
   const file = fileInput.files[0];
   if (file) {
     const formData = new FormData();
-    formData.append("image", file);
+    formData.append("file", file);
 
     // Loading stavatkasini ko'rsatish
     loadingText.textContent = "Loading...";
@@ -47,7 +49,7 @@ fileInput.addEventListener("change", function () {
     console.log(file);
 
     // Fetch orqali rasmni backendga yuborish
-    fetch("/backend/upload", {
+    fetch("https://umidbekrustamov.jprq.live/predict", {
       method: "POST",
       body: formData,
     })
@@ -58,9 +60,11 @@ fileInput.addEventListener("change", function () {
         return response.json();
       })
       .then((data) => {
+        console.log(data);
         // Javobni brauzerga chiqarish
         loadingText.textContent = ""; // Loading yozuvi o'chiriladi
-        imagePreview.innerHTML = `<img src="${data.imageUrl}" alt="Rasmni ko'rish">`;
+        resultText.innerHTML = `${data.class}`;
+        resultFoiz.innerHTML = `${data.confidence}`;
         imagePreview.style.display = "block";
         uploadDefaultText.style.display = "none";
       })
